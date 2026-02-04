@@ -3,130 +3,190 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FlowStack Agency</title>
+    <title>FlowStack Agency | AI Revenue OS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.halo.min.js"></script>
-    <!-- ElevenLabs Widget Script -->
     <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
-    
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              background: '#0b1020',
-              accent: '#00f2ff',
-              surface: 'rgba(255, 255, 255, 0.03)',
-              glass: 'rgba(255, 255, 255, 0.05)',
-            },
-            fontFamily: {
-              sans: ['Inter', 'sans-serif'],
-            },
-          },
-        },
-      }
-    </script>
     <style>
-      body {
-        background-color: #0b1020;
-        color: white;
-        font-family: 'Inter', sans-serif;
-        margin: 0;
-        overflow-x: hidden;
-      }
-      #vanta-canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        opacity: 0.5; /* Dimmed for readability */
-      }
-      .readable {
-        text-shadow: 0px 2px 10px rgba(0, 0, 0, 0.9), 0px 0px 20px rgba(0, 0, 0, 0.6);
-      }
-      .glass-card {
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-      }
-      .neon-text {
-        color: #00f2ff;
-        text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
-      }
+      body { background-color: #0b1020; color: white; margin: 0; font-family: 'Inter', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
+      #vanta-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.5; }
+      .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+      .readable { text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.5); }
+      .neon-text { color: #00f2ff; text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); }
+      .neon-border { border: 1px solid rgba(0, 242, 255, 0.3); }
+      input, select { background: rgba(255,255,255,0.05) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; }
     </style>
 </head>
 <body>
     <div id="vanta-canvas"></div>
 
-    <div class="relative z-10">
-        <nav class="flex justify-between items-center px-8 py-8 max-w-7xl mx-auto">
-            <div class="text-2xl font-black tracking-tighter uppercase readable">
-                FLOWSTACK<span class="neon-text">AGENCY</span>
+    <nav class="flex justify-between items-center px-8 py-8 max-w-7xl mx-auto relative z-10">
+      <div class="text-2xl font-black tracking-tighter uppercase readable">FLOWSTACK<span class="neon-text">AGENCY</span></div>
+      <div class="hidden md:flex gap-8 text-xs font-bold uppercase tracking-widest">
+        <a href="#calculator" class="hover:text-accent transition-colors">ROI Calculator</a>
+        <a href="#qualification" class="hover:text-accent transition-colors">Qualification</a>
+        <a href="#pricing" class="hover:text-accent transition-colors">Pricing</a>
+      </div>
+      <button class="bg-[#00f2ff] text-black px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-wider hover:brightness-110 transition-all">Install System</button>
+    </nav>
+
+    <!-- HERO -->
+    <section class="max-w-5xl mx-auto text-center pt-24 pb-20 px-4 relative z-10">
+      <h1 class="text-6xl md:text-8xl font-black tracking-tight mb-8 leading-[0.9] readable">
+        Scale Without<br>
+        <span class="neon-text">Human Friction</span>
+      </h1>
+      <p class="text-xl text-zinc-300 mb-12 max-w-2xl mx-auto readable font-medium">
+        Deterministic revenue engines. We replace manual chaos with automated precision using n8n and Gemini.
+      </p>
+    </section>
+
+    <!-- CALCULATOR SECTION -->
+    <section id="calculator" class="max-w-4xl mx-auto py-20 px-4 relative z-10">
+      <div class="glass rounded-[2.5rem] p-10 neon-border">
+        <h2 class="text-3xl font-bold mb-8 text-center readable">Revenue Leak Calculator</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-4">
+                <label class="block text-sm font-bold text-zinc-400">Monthly Leads</label>
+                <input type="number" id="leads" value="100" class="w-full p-4 rounded-xl focus:outline-none focus:border-accent">
+                
+                <label class="block text-sm font-bold text-zinc-400">Avg. Deal Value ($)</label>
+                <input type="number" id="value" value="2000" class="w-full p-4 rounded-xl">
+                
+                <label class="block text-sm font-bold text-zinc-400">Current Lead Leak (%)</label>
+                <input type="range" id="leak" min="0" max="100" value="30" class="w-full">
+                <p class="text-right text-xs text-accent"><span id="leakVal">30</span>% lost to slow follow-up</p>
             </div>
-            <button class="bg-[#00f2ff] text-[#0b1020] px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-wider hover:brightness-110 transition-all">
-                Install System
-            </button>
-        </nav>
-
-        <section class="max-w-5xl mx-auto text-center pt-24 pb-20 px-4">
-            <h1 class="text-6xl md:text-8xl font-black tracking-tight mb-8 leading-[0.9] readable">
-                Scale Without<br>
-                <span class="neon-text">Human Friction</span>
-            </h1>
-            <p class="text-xl text-zinc-300 mb-12 max-w-2xl mx-auto readable">
-                FlowStack Agency installs deterministic revenue engines. We replace manual chaos with automated precision using n8n and Gemini.
-            </p>
-        </section>
-
-        <!-- UPDATED TECH STACK -->
-        <section class="max-w-6xl mx-auto py-20 px-4">
-            <div class="glass-card rounded-[2.5rem] p-12 text-center">
-                <h2 class="text-3xl font-bold mb-12 readable">The FlowStack Core Architecture</h2>
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
-                    <div class="p-4">
-                        <div class="neon-text font-mono text-[10px] tracking-widest mb-3 uppercase">Logic</div>
-                        <h3 class="text-2xl font-bold">n8n</h3>
-                    </div>
-                    <div class="p-4 border-l border-white/10">
-                        <div class="neon-text font-mono text-[10px] tracking-widest mb-3 uppercase">Intelligence</div>
-                        <h3 class="text-2xl font-bold">Gemini</h3>
-                    </div>
-                    <div class="p-4 border-l border-white/10">
-                        <div class="neon-text font-mono text-[10px] tracking-widest mb-3 uppercase">Database</div>
-                        <h3 class="text-2xl font-bold">Airtable</h3>
-                    </div>
-                    <div class="p-4 border-l border-white/10">
-                        <div class="neon-text font-mono text-[10px] tracking-widest mb-3 uppercase">Delivery</div>
-                        <h3 class="text-2xl font-bold">Gmail API</h3>
-                    </div>
-                    <div class="p-4 border-l border-white/10">
-                        <div class="neon-text font-mono text-[10px] tracking-widest mb-3 uppercase">Alerting</div>
-                        <h3 class="text-2xl font-bold">Slack</h3>
-                    </div>
-                </div>
+            <div class="bg-black/40 rounded-3xl p-8 flex flex-col justify-center text-center">
+                <p class="text-zinc-400 uppercase text-xs font-bold tracking-widest mb-2">Annual Revenue Leak</p>
+                <h3 class="text-5xl font-black neon-text">$<span id="totalLeak">720,000</span></h3>
+                <p class="mt-4 text-sm text-zinc-500 italic">FlowStack plugs this gap with 24/7 AI engagement.</p>
             </div>
-        </section>
-    </div>
+        </div>
+      </div>
+    </section>
 
-    <!-- ElevenLabs Widget - Make sure to add your Agent ID -->
+    <!-- TECH STACK CORE -->
+    <section class="max-w-6xl mx-auto py-10 px-4 relative z-10">
+      <div class="glass rounded-[2.5rem] p-10 text-center">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+          <div class="p-4">
+            <div class="neon-text font-mono text-[10px] tracking-widest mb-3 uppercase">Logic</div>
+            <h3 class="text-xl font-bold">n8n</h3>
+          </div>
+          <div class="p-4 border-l border-white/10">
+            <div class="neon-text font-mono text-[10px] tracking-widest mb-3 uppercase">Intelligence</div>
+            <h3 class="text-xl font-bold">Gemini</h3>
+          </div>
+          <div class="p-4 border-l border-white/10">
+            <div class="neon-text font-mono text-[10px] tracking-widest mb-3 uppercase">Database</div>
+            <h3 class="text-xl font-bold">Airtable</h3>
+          </div>
+          <div class="p-4 border-l border-white/10">
+            <div class="neon-text font-mono text-[10px] tracking-widest mb-3 uppercase">Delivery</div>
+            <h3 class="text-xl font-bold">Gmail API</h3>
+          </div>
+          <div class="p-4 border-l border-white/10">
+            <div class="neon-text font-mono text-[10px] tracking-widest mb-3 uppercase">Alerting</div>
+            <h3 class="text-xl font-bold">Slack</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUALIFICATION / LEAD FORM -->
+    <section id="qualification" class="max-w-4xl mx-auto py-20 px-4 relative z-10">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-black mb-4 readable">Audit Your Workflow</h2>
+            <p class="text-zinc-400">Is your business ready for an AI Operating System?</p>
+        </div>
+        <form class="glass rounded-[2.5rem] p-10 space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <input type="text" placeholder="Full Name" class="p-4 rounded-xl w-full">
+                <input type="email" placeholder="Business Email" class="p-4 rounded-xl w-full">
+            </div>
+            <select class="w-full p-4 rounded-xl">
+                <option>Current Monthly Revenue</option>
+                <option>$0 - $10k</option>
+                <option>$10k - $50k</option>
+                <option>$50k+</option>
+            </select>
+            <textarea placeholder="Tell us about your biggest bottleneck..." class="w-full p-4 rounded-xl h-32"></textarea>
+            <button class="w-full bg-[#00f2ff] text-black font-black py-5 rounded-xl uppercase tracking-widest hover:brightness-110">Request System Audit</button>
+        </form>
+    </section>
+
+    <!-- PRICING SECTION -->
+    <section id="pricing" class="max-w-6xl mx-auto py-20 px-4 relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass p-10 rounded-[2.5rem] border-zinc-800">
+                <h4 class="text-sm font-bold neon-text uppercase tracking-widest mb-4">Foundation</h4>
+                <div class="text-4xl font-black mb-6">$2,500 <span class="text-xs text-zinc-500">/one-time</span></div>
+                <ul class="text-sm text-zinc-400 space-y-4 mb-8">
+                    <li>• Basic n8n Logic Setup</li>
+                    <li>• Airtable CRM Config</li>
+                    <li>• Gmail API Integration</li>
+                </ul>
+                <button class="w-full border border-white/20 py-3 rounded-xl hover:bg-white/10">Select Plan</button>
+            </div>
+            <div class="glass p-10 rounded-[2.5rem] neon-border scale-105 bg-black/20">
+                <h4 class="text-sm font-bold neon-text uppercase tracking-widest mb-4">Full OS</h4>
+                <div class="text-4xl font-black mb-6">$5,000 <span class="text-xs text-zinc-500">/one-time</span></div>
+                <ul class="text-sm text-zinc-300 space-y-4 mb-8">
+                    <li>• Gemini AI Content Engine</li>
+                    <li>• Automated Lead Qualification</li>
+                    <li>• Real-time Slack Alerts</li>
+                    <li>• Full Training & Support</li>
+                </ul>
+                <button class="w-full bg-[#00f2ff] text-black font-bold py-3 rounded-xl">Most Popular</button>
+            </div>
+            <div class="glass p-10 rounded-[2.5rem] border-zinc-800">
+                <h4 class="text-sm font-bold neon-text uppercase tracking-widest mb-4">Enterprise</h4>
+                <div class="text-4xl font-black mb-6">Custom</div>
+                <ul class="text-sm text-zinc-400 space-y-4 mb-8">
+                    <li>• Multi-Channel OS</li>
+                    <li>• Custom LLM Training</li>
+                    <li>• White-Glove Management</li>
+                </ul>
+                <button class="w-full border border-white/20 py-3 rounded-xl hover:bg-white/10">Contact Us</button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center py-10 text-zinc-600 text-[10px] tracking-widest uppercase relative z-10">
+      FlowStack Agency • All Rights Reserved 2026
+    </footer>
+
     <elevenlabs-convai agent-id="YOUR_AGENT_ID_HERE"></elevenlabs-convai>
 
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-          VANTA.HALO({
-            el: "#vanta-canvas",
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: false,
-            baseColor: 0x0b1020,
-            backgroundColor: 0x0b1020,
-            amplitudeFactor: 1.0,
-            size: 1.5
-          });
+      // Vanta Halo Init
+      VANTA.HALO({
+        el: "#vanta-canvas",
+        mouseControls: true,
+        touchControls: true,
+        baseColor: 0x0b1020,
+        backgroundColor: 0x0b1020,
+        amplitudeFactor: 1.1,
+        size: 1.4
       });
+
+      // Calculator Logic
+      const leads = document.getElementById('leads');
+      const value = document.getElementById('value');
+      const leak = document.getElementById('leak');
+      const leakVal = document.getElementById('leakVal');
+      const totalLeak = document.getElementById('totalLeak');
+
+      function calculate() {
+          leakVal.innerText = leak.value;
+          const monthlyLeak = leads.value * value.value * (leak.value / 100);
+          const annualLeak = monthlyLeak * 12;
+          totalLeak.innerText = annualLeak.toLocaleString();
+      }
+
+      [leads, value, leak].forEach(el => el.addEventListener('input', calculate));
     </script>
 </body>
 </html>
